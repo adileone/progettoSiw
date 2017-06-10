@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Skill {
@@ -12,6 +13,9 @@ public class Skill {
 	long id;
 	private String name;
 	private double value;
+
+	@ManyToOne
+	private Utente user;
 
 	public Skill() {
 	}
@@ -31,4 +35,21 @@ public class Skill {
 	public void setValue(double value) {
 		this.value = value;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Utente getUser() {
+		return user;
+	}
+
+	public void setUser(Utente user) {
+		this.user = user;
+	}
+
 }

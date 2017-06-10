@@ -72,7 +72,7 @@
 				<br></br>
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="invisibile">
 
-					<form action="@{/getListeners}" method="post">
+					<form action="getListeners" method="post">
 
 						<div class="input-group">
 							Number of task executors : <input type="text" id="threads">
@@ -109,7 +109,7 @@
 								<div id="collapse1" class="panel">
 									<div class="panel-body">
 										<div>
-											<form action="@{/refresh}" method="get">
+											<form action="refresh" method="get">
 												<input type="submit" class="btn btn-primary" value="Refresh" />
 											</form>
 										</div>
@@ -203,7 +203,7 @@
 			</div>
 
 			<div id="list" class="tab-pane fade">
-				<form action="@{/list}" method="get">
+				<form action="list" method="get">
 					<h3>List</h3>
 					<br></br> <input type="submit" class="btn btn-primary" value="List"></input>
 					<br></br> <br></br>
@@ -211,7 +211,7 @@
 			</div>
 
 			<div id="reset" class="tab-pane fade">
-				<form action="@{/reset}" method="get">
+				<form action="reset" method="get">
 					<h3>Reset</h3>
 					<br></br> <input type="submit" class="btn btn-primary"
 						value="Reset"></input> <br></br> <br></br>

@@ -1,30 +1,151 @@
-<!DOCTYPE>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html>
+<html lang="en" 
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:tiles="http://www.thymeleaf.org">
-	
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Initial Page</title>
+<title>Signin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link rel='stylesheet' type='text/css'
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/css/bootstrap-slider.css"></link>
+<link rel='stylesheet' type='text/css'
+	href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css
+	"></link>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></link>
+
+<!--  cdn di jquery confirm -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.0.3/jquery-confirm.min.css"></link>
+<!-- -->
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/bootstrap-slider.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<!--cdn di jquery.confirm -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.0.3/jquery-confirm.min.js"></script>
 </head>
 <body>
-SIGNIN
-<form name="f" th:action="@{/signin}" method="post">
-<br></br>
-<br></br>
-Username: <br></br>
-<input type="text" id="username" name="username">
-<br></br>
-Email: <br></br>
-<input type="text" id="email" name="email">
-<br></br>
-Password: <br></br>
-<input type="password" id="password" name="password">
-<br></br>
-RePassword: <br></br>
-<input type="password" id="repassword" name="repassword">
-<br></br>
-<input type="submit" value="signin">
-</form>
+	<br></br>
+	<div id="container" class="container">
+		<img src="images/kayak.png" width="250px" align="left" /> <img
+			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
+		<br></br> <br></br>
+		<hr></hr>
+		<br></br> <h3><label>Please fill out the form :</label></h3>
+
+		<form name="f" th:action="@{/signin}" method="post">
+
+
+			<br>
+			<div class="input-group">
+				<span class="input-group-addon"><i
+					class="glyphicon glyphicon-user"></i></span> <input id="username"
+					type="text" class="form-control" name="username"
+					placeholder="Username">
+			</div>
+			<br>
+			<div class="input-group">
+				<span class="input-group-addon"><i
+					class="glyphicon glyphicon-envelope"></i></span> <input id="email"
+					type="text" class="form-control" name="email" placeholder="Email">
+			</div>
+			<br>
+			<div class="input-group">
+				<span class="input-group-addon"><i
+					class="glyphicon glyphicon-lock"></i></span> <input id="password"
+					type="password" class="form-control" name="password"
+					placeholder="Password">
+			</div>
+			<br>
+
+			<div class="row">
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Skill: </span> <input type="text"
+							class="form-control" aria-label="..." id="skill1" name="skill1">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Value: </span> <input type="text"
+							class="form-control" aria-label="..." id="value1" name="value1">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+				<br> <br>
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Skill: </span> <input type="text"
+							class="form-control" aria-label="..." id="skill2" name="skill2">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Value: </span> <input type="text"
+							class="form-control" aria-label="..." id="value2" name="value2">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+				<br> <br>
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Skill: </span> <input type="text"
+							class="form-control" aria-label="..." id="skill3" name="skill3">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Value: </span> <input type="text"
+							class="form-control" aria-label="..." id="value3" name="value3">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+
+			</div>
+			<!-- /.row -->
+			<br><br>
+			<input type="submit" class="btn btn-default" value="Signin">
+
+		</form>
+	</div>
+	<div class="panel-footer" align="center"
+		style="position: fixed; bottom: 0; width: 100%;">
+		<font style="color: #111">Copyright @2017 <a
+			href="http://mysite.com/">mysite.com</a>, All Rights Reserved.
+		</font>
+	</div>
 </body>
 </html>
