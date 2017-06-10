@@ -4,9 +4,14 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.model.Skill;
 import it.uniroma3.siw.model.Utente;
@@ -73,7 +79,7 @@ public class MainController {
 	public String signUser(@RequestParam String username, @RequestParam String email, 
 			@RequestParam String password, @RequestParam(required=false) String skill1, @RequestParam(required=false) String value1, 
 			@RequestParam(required=false) String skill2, @RequestParam(required=false) String value2, 
-			@RequestParam(required=false) String skill3, @RequestParam(required=false) String value3) {
+			@RequestParam(required=false) String skill3, @RequestParam(required=false) String value3, final RedirectAttributes redirectAttributes) {
 
 		List<Skill> skills = new LinkedList<Skill>();
 		System.out.println(skill1);
@@ -119,9 +125,20 @@ public class MainController {
 		user.setDataCreazione(new Date());
 		user.setSkills(skills);
 		user.setRole(Role.ROLE_USER);
-		utenteService.add(user);		
+		utenteService.add(user);	
+		
+		redirectAttributes.addFlashAttribute("message","you have been registered, please login");
 
-		return "signin";
+		return "redirect:login";
+	}
+	
+	@GetMapping(value="/logout")
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/login?logout";
 	}
 
 }

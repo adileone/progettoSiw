@@ -40,15 +40,14 @@
 						<div class="panel-body">
 
 
-							<!-- message Per logout -->
-
-
 							<form name="f" th:action="@{/login}" method="post">
 								<fieldset>
 									<div th:if="${param.error}" class="alert alert-error"
 										style="color: red">Invalid username and password.</div>
 									<div th:if="${param.logout}" class="alert alert-success">
 										You have been logged out.</div>
+									<div th:if="${message}" class="alert alert-success"
+										style="color: green;">You have been registered, please login</div>
 									<div class="form-group">
 										<label for="username">Username</label> <input type="text"
 											id="username" name="username" />
