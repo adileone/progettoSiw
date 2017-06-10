@@ -61,10 +61,11 @@ public class MainController {
 
 
 	@GetMapping("/userPage")
-	public String userPage(ModelMap model) {
-
-		Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	      
-		model.addAttribute("user", user);
+	public String userPage(ModelMap model, Authentication authentication) {
+	
+		String name = authentication.getName();
+		Utente user = utenteRepository.findByUsername(name).get(0);
+		model.addAttribute("user",user);
 
 		return "userPage";
 	}

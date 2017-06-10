@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-<title>Login</title>
+<title>Profile</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 <script
@@ -20,12 +20,20 @@
 		<br></br> <br></br>
 		<div align="right">
 			You are logged in as <a href="/userPage"><span
-				sec:authentication="name"></span></a><br>
-			 <a href="/logout" > logout</a>
+				sec:authentication="name"></span></a><br> <a href="/logout">
+				logout</a>
 		</div>
 		<hr></hr>
-		<br></br> UserPage <br></br>
-	
+		<br></br> Profile: <br></br> 
+		Username : <span th:text="${user.username}" /></span><br></br>
+		
+		Skills: <br><br>
+		<table>
+			<tr th:each="skill,iterStat : ${user.skills}">
+				<td style="padding:0 15px 0 15px;" th:text="${skill.name}" ></td><td>:</td>
+				<td style="padding:0 15px 0 15px;" th:text="${skill.value}"></td>
+			</tr>
+		</table>
 	</div>
 	<div class="panel-footer" align="center"
 		style="position: fixed; bottom: 0; width: 100%;">
