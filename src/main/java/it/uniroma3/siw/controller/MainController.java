@@ -44,6 +44,18 @@ public class MainController {
 	public String getSigninPage() {
 		return "signin";
 	}
+	
+	
+	@GetMapping("/userPage")
+	public String userPage() {
+		return "userPage";
+	}
+
+	@GetMapping("/management")
+	public String management() {
+		return "management";
+	}
+	
 
 	@PostMapping("/signin")
 	public String signUser(@RequestParam String username, @RequestParam String email, 

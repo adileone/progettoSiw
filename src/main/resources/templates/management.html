@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<title>Login</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+		<div id="container" class="container">
+
+		<img src="images/kayak.png" width="250px" align="left" /> <img
+			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
+		<br></br> <br></br>
+		<div align="right">
+			You are logged in as <a href="/userPage"><span sec:authentication="name"></span></a>
+		</div>
+		
+		</div>
+		
+		MAnagementPage
+		
+	<div class="panel-footer" align="center"
+		style="position: fixed; bottom: 0; width: 100%;">
+		<font style="color: #111">Copyright @2017 <a
+			href="http://mysite.com/">mysite.com</a>, All Rights Reserved.
+		</font>
+	</div>
+</body>
+</html>
