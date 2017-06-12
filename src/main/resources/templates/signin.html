@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" 
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Signin</title>
@@ -43,11 +42,17 @@
 			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
 		<br></br> <br></br>
 		<hr></hr>
-		<br></br> <h3><label>Please fill out the form :</label></h3>
+		<br></br>
+		<h3>
+			<label>Please fill out the form :</label>
+		</h3>
 
 		<form name="f" th:action="@{/signin}" method="post">
 
 
+			<br>
+			<div th:if="${message}" class="alert alert-error"
+				style="color: red">username already exists, please choose other </div>
 			<br>
 			<div class="input-group">
 				<span class="input-group-addon"><i
@@ -136,8 +141,8 @@
 
 			</div>
 			<!-- /.row -->
-			<br><br>
-			<input type="submit" class="btn btn-default" value="Signin">
+			<br>
+			<br> <input type="submit" class="btn btn-default" value="Signin">
 
 		</form>
 	</div>

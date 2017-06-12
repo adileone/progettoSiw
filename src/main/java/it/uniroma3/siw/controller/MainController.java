@@ -62,7 +62,7 @@ public class MainController {
 
 	@GetMapping("/userPage")
 	public String userPage(ModelMap model, Authentication authentication) {
-	
+
 		String name = authentication.getName();
 		Utente user = utenteRepository.findByUsername(name).get(0);
 		model.addAttribute("user",user);
@@ -82,15 +82,8 @@ public class MainController {
 			@RequestParam(required=false) String skill2, @RequestParam(required=false) String value2, 
 			@RequestParam(required=false) String skill3, @RequestParam(required=false) String value3, final RedirectAttributes redirectAttributes) {
 
-		List<Skill> skills = new LinkedList<Skill>();
-		System.out.println(skill1);
-		System.out.println(value1);
-		System.out.println(skill2);
-		System.out.println(value2);
-		System.out.println(skill3);
-		System.out.println(value3);
-		
-		
+		List<Skill> skills = new LinkedList<Skill>();		
+
 		if(!skill1.equals("")) {
 			Skill skillOne = new Skill();
 			skillOne.setName(skill1);
@@ -98,18 +91,18 @@ public class MainController {
 
 			skills.add(skillOne);
 		}
-		
+
 		if(!skill2.equals("")) {
-			
+
 			Skill skillTwo = new Skill();
 			skillTwo.setName(skill2);
 			skillTwo.setValue(Double.parseDouble(value2));
 
 			skills.add(skillTwo);
 		}
-		
+
 		if(!skill3.equals("")) {
-			
+
 
 			Skill skillThree = new Skill();
 			skillThree.setName(skill3);
@@ -117,29 +110,42 @@ public class MainController {
 
 			skills.add(skillThree);
 		}
-	    
-	
-		Utente user = new Utente();
-		user.setUsername(username);
-		user.setPassword(new BCryptPasswordEncoder().encode(password));
-		user.setEmail(email);
-		user.setDataCreazione(new Date());
-		user.setSkills(skills);
-		user.setRole(Role.ROLE_USER);
-		utenteService.add(user);	
-		
-		redirectAttributes.addFlashAttribute("message","you have been registered, please login");
 
-		return "redirect:login";
+
+
+		if ( utenteRepository.findByUsername(username).isEmpty()) {
+
+			Utente user = new Utente();
+			user.setUsername(username);
+			user.setPassword(new BCryptPasswordEncoder().encode(password));
+			user.setEmail(email);
+			user.setDataCreazione(new Date());
+			user.setSkills(skills);
+			user.setRole(Role.ROLE_USER);
+			utenteService.add(user);	
+
+			redirectAttributes.addFlashAttribute("message","you have been registered, please login");
+			return "redirect:login";
+
+		}
+
+		else {
+
+			redirectAttributes.addFlashAttribute("message","username already exists");
+			return "redirect:signin";
+
+		}
+
+
 	}
-	
+
 	@GetMapping(value="/logout")
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/login?logout";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){    
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
 	}
 
 }

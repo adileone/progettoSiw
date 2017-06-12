@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,6 +35,7 @@ public class Utente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
 
+	@Column(unique=true)
 	private String username;
 
 	private String password;
@@ -125,6 +127,11 @@ public class Utente implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "Utente [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + "]";
 	}
 
 }
