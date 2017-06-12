@@ -37,6 +37,15 @@ public class KayakController {
 		System.out.println(result + "  ------- > list ok"); 
 		return "kayakHome";
 	}
+	
+	@GetMapping("/reset")
+	public String reset() {
+
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.getForObject("http://localhost:8080/rest/reset", String.class);
+		System.out.println(result + "  ------- > reset ok"); 
+		return "kayakHome";
+	}
 
 
 	@PostMapping("/insert")
