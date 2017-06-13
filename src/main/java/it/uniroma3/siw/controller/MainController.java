@@ -27,6 +27,8 @@ import it.uniroma3.siw.model.Utente.Role;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.UtenteService;
 
+
+
 //controller to access the login page
 @Controller
 public class MainController {
@@ -59,6 +61,10 @@ public class MainController {
 		return "signin";
 	}
 
+	@GetMapping("/editor")
+	public String editor() {
+		return "editor";
+	}
 
 	@GetMapping("/userPage")
 	public String userPage(ModelMap model, Authentication authentication) {

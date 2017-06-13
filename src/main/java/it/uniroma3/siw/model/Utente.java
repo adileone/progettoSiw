@@ -129,9 +129,4 @@ public class Utente implements Serializable {
 		return serialVersionUID;
 	}
 
-	@Override
-	public String toString() {
-		return "Utente [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + "]";
-	}
-
 }

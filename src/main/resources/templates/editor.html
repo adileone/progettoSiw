@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<title>Pipeline Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link rel='stylesheet' type='text/css'
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/css/bootstrap-slider.css"></link>
+<link rel='stylesheet' type='text/css'
+	href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css
+	"></link>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></link>
+
+<!--  cdn di jquery confirm -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.0.3/jquery-confirm.min.css"></link>
+<!-- -->
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/bootstrap-slider.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<!--cdn di jquery.confirm -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.0.3/jquery-confirm.min.js"></script>
+</head>
+<body>
+	<br></br>
+	<div id="container" class="container">
+		<img src="images/kayak.png" width="250px" align="left" /> <img
+			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
+		<br></br> <br></br>
+		<div align="right">
+			You are logged in as <a href="/userPage"><span
+				sec:authentication="name"></span></a><br> <a href="/logout">
+				logout</a>
+		</div>
+		<hr></hr>
+		<div th:if="${message}" style="color: green;">
+			<span th:text="${message}">title</span>
+		</div>
+		<br>
+		<div class="panel panel-default">
+
+			<div class="panel-heading">Add input :</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form action="addInput" method="post">
+						Filename : <input type="text" id="filename" name="filename">
+						<br> <br> <input type="submit" value="add filename"
+							class="btn btn-primary" />
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Add Stage:</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form action="addStage" method="post">
+
+						<div class="form-group blu-margin">
+							Primitive : <select id="primitive" name="primitive">
+								<option th:each="operator : ${prList}" th:value="${operator}"
+									th:text="${operator}"></option>
+							</select>
+						</div>
+
+						<br>
+
+						<div class="form-group blu-margin">
+							<select style="float: left; padding: 0 15px 0 15px;" id="sxItem"
+								name="sxItem">
+								<option th:each="operator : ${addedInput}"
+									th:value="${operator}" th:text="${operator}"></option>
+							</select>
+
+							<div style="float: left; padding: 0 15px 0 15px;">with</div>
+
+							<select style="float: left; padding: 0 15px 0 15px;" id="dxItem"
+								name="dxItem">
+								<option th:each="operator : ${addedInput}"
+									th:value="${operator}" th:text="${operator}"></option>
+							</select>
+
+						</div>
+						<div style="float: left; padding: 0 15px 0 15px;">
+							<input type="submit" value="add stage" class="btn btn-primary" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Add Watchpoint:</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form action="addWatchpoint" method="post">
+						<input type="submit" value="add watchpoint"
+							class="btn btn-primary" />
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<form action="createPipeline" method="post">
+			Name: <input type="text" name="name" id="name">
+			<label> Description</label>
+			<textarea rows="3" id="description" name="description"></textarea>
+			<input type="submit" value="create pipeline" class="btn btn-primary" />
+		</form>
+
+		<br> <br> <br>
+
+	</div>
+	<div class="panel-footer" align="center"
+		style="position: fixed; bottom: 0; width: 100%;">
+		<font style="color: #111">Copyright @2017 <a
+			href="http://mysite.com/">mysite.com</a>, All Rights Reserved.
+		</font>
+	</div>
+</body>
+</html>

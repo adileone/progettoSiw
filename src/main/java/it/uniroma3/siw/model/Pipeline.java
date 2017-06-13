@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,23 +28,23 @@ public class Pipeline {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
-	@OneToMany
-	private List<Task> task;
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Link> links;
 
 	@ManyToOne
 	private Utente user;
 
 
 	public Pipeline() {
-		this.task = new LinkedList<>();
+		this.links = new LinkedList<>();
 	}
 
-	public List<Task> getTask() {
-		return task;
+	public List<Link> getLinks() {
+		return links;
 	}
 
-	public void setTask(LinkedList<Task> task) {
-		this.task = task;
+	public void setLinks(LinkedList<Link> links) {
+		this.links = links;
 	}
 
 	public long getId() {
@@ -84,6 +85,12 @@ public class Pipeline {
 
 	public void setUser(Utente user) {
 		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Pipeline [id=" + id + ", name=" + name + ", description=" + description + ", creationDate="
+				+ creationDate + ", links=" + links + ", user=" + user + "]";
 	}
 
 }

@@ -2,24 +2,57 @@ package it.uniroma3.siw.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.uniroma3.siw.model.Link;
+import it.uniroma3.siw.model.Pipeline;
+import it.uniroma3.siw.model.Utente;
+import it.uniroma3.siw.repository.PipelineRepository;
+import it.uniroma3.siw.repository.UtenteRepository;
+import it.uniroma3.siw.service.PipelineService;
+import it.uniroma3.siw.service.UtenteService;
+
+
+
+
 @Controller
+@SuppressWarnings("unused")
 public class KayakController {
-	
+
 	private String propertiesConfigFilePath = "/application.properties";
-	
+	private LinkedList<String> addedInput = new LinkedList<String>();
+	private LinkedList<Link> links = new LinkedList<Link>();
+	private String isWatchpoint;
+	@Autowired
+	private PipelineRepository pipelineRepository;
+	@Autowired
+	private PipelineService pipelineService;
+	@Autowired
+	private UtenteRepository utenteRepository;
+	@Autowired
+	private UtenteService utenteService;
+
+	private RestTemplate restTemplate = new RestTemplate();
+	@SuppressWarnings("unchecked")
+	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://localhost:8080/rest/primitiveList", LinkedList.class);
+
 	@GetMapping("/refresh")
 	public String refresh() {
 
@@ -37,7 +70,7 @@ public class KayakController {
 		System.out.println(result + "  ------- > list ok"); 
 		return "kayakHome";
 	}
-	
+
 	@GetMapping("/reset")
 	public String reset() {
 
@@ -61,7 +94,7 @@ public class KayakController {
 		System.out.println(csvPath);
 
 		String fileName = csvPath + file.getOriginalFilename();
-		
+
 		System.out.println(fileName);
 
 		Map<String, String> vars = new HashMap<String,String>();
@@ -93,5 +126,87 @@ public class KayakController {
 
 		return "kayakHome";
 	}
+
+	@GetMapping("/goEditor")
+	public String goEditor(ModelMap model) {
+
+		model.addAttribute("prList", prList);
+
+		return "editor";
+	}
+
+	@PostMapping("/addInput")
+	public String addInput(ModelMap model, @RequestParam String filename) {
+
+		addedInput.add(filename);
+		model.addAttribute("addedInput", addedInput);
+		model.addAttribute("message", "input added");				
+		model.addAttribute("prList", prList);
+
+		return "editor";
+	}
+
+	@PostMapping("/addStage")
+	public String addStage(ModelMap model, @RequestParam String primitive, @RequestParam String sxItem, @RequestParam String dxItem) {
+
+		model.addAttribute("prList", prList);
+		model.addAttribute("addedInput", addedInput);
+
+
+		Link link = new Link();
+		link.setDxItem(dxItem);
+		link.setSxItem(sxItem);
+		link.setStage(primitive);
+
+		links.add(link);
+
+		model.addAttribute("message", "stage added");
+
+		return "editor";
+	}
+
+	@PostMapping("/addWatchpoint")
+	public String addWatchpoint(ModelMap model) {
+
+		model.addAttribute("prList", prList);
+		model.addAttribute("addedInput", addedInput);
+		model.addAttribute("message", "watchpoint added");
+
+		isWatchpoint= "true";
+
+		return "editor";
+	}
+
+	@PostMapping("/createPipeline")
+	public String createPipeline(ModelMap model, @RequestParam String name, @RequestParam String description) {
+
+		Pipeline pipe = new Pipeline();
+		pipe.setCreationDate(new Date());
+		pipe.setName(name);
+		pipe.setDescription(description);	
+		pipe.setLinks(links);
+		for (Link l : links) System.out.println(l.toString());
+
+
+		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+		pipe.setUser(user);
+
+		System.out.println(pipe.toString());
+		pipelineService.add(pipe);
+
+		model.addAttribute("prList", prList);
+		model.addAttribute("addedInput", addedInput);
+		model.addAttribute("pipe", pipe);
+		model.addAttribute("message", "pipeline created and saved");
+
+		return "editor";
+	}
+
+	public String getUtenteConnesso() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		return name;
+	}
+
 
 }
