@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.uniroma3.siw.model.Link;
 import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Utente;
@@ -199,6 +203,22 @@ public class KayakController {
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("message", "pipeline created and saved");
 
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+
+			// Convert object to JSON string and pretty print
+			String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pipe);
+			System.out.println(jsonInString);
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
 		return "editor";
 	}
 
