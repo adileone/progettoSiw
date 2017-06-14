@@ -2,6 +2,7 @@ package it.uniroma3.siw.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,8 +33,6 @@ import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.PipelineService;
 import it.uniroma3.siw.service.UtenteService;
-
-
 
 
 @Controller
@@ -157,7 +156,7 @@ public class KayakController {
 		model.addAttribute("addedInput", addedInput);
 
 		links = new LinkedList<>();
-		
+
 		Link link = new Link();
 		link.setDxItem(dxItem);
 		link.setSxItem(sxItem);
@@ -190,8 +189,7 @@ public class KayakController {
 		pipe.setName(name);
 		pipe.setDescription(description);	
 		pipe.setLinks(links);
-		for (Link l : links) System.out.println(l.toString());
-	
+
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 		pipe.setUser(user);
 
@@ -218,7 +216,7 @@ public class KayakController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
+
 		this.links=null;
 		return "editor";
 	}
@@ -227,6 +225,15 @@ public class KayakController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
 		return name;
+	}
+
+	@GetMapping("/listUserPipes")
+	public String listUserPipes(ModelMap model) {
+		ArrayList<Pipeline> pipeList = new ArrayList<>();
+		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+		pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+		model.addAttribute("pipeList", pipeList);
+		return "kayakHome";
 	}
 
 

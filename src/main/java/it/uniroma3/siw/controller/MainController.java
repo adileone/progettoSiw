@@ -65,6 +65,11 @@ public class MainController {
 	public String editor() {
 		return "editor";
 	}
+	
+	@GetMapping("/modifyPipe")
+	public String modifyPipe() {
+		return "modifyPipe";
+	}
 
 	@GetMapping("/userPage")
 	public String userPage(ModelMap model, Authentication authentication) {

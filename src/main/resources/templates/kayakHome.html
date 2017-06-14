@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" 
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Kayak</title>
@@ -45,8 +44,9 @@
 			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
 		<br></br> <br></br>
 		<div align="right">
-			You are logged in as <a href="/userPage"><span sec:authentication="name"></span></a> <br>
-			 <a href="/logout" > logout</a>
+			You are logged in as <a href="/userPage"><span
+				sec:authentication="name"></span></a> <br> <a href="/logout">
+				logout</a>
 		</div>
 
 		<div align="right" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -219,12 +219,31 @@
 						value="Reset"></input> <br></br> <br></br>
 				</form>
 			</div>
-			
-					<div id="pipelines" class="tab-pane fade">
-				<form action="goEditor" method="get">
-					<h3>Lista Pipeline</h3>
+
+			<div id="pipelines" class="tab-pane fade">
+
+				<form action="listUserPipes" method="get">
 					<br></br> <input type="submit" class="btn btn-primary"
-						value="pipeline editor"></input> <br></br> <br></br>
+						value="Get user pipelines"></input> <br></br> <br></br>
+				</form>
+
+
+				<table>
+				
+					<tr th:each="pipe,iterStat : ${pipeList}">
+						<td style="padding: 0 15px 0 15px;" th:text="${pipe.name}"></td>
+						<td> ---> </td>
+						<td style="padding: 0 15px 0 15px;"><a href="/modifyPipe">modify</a></td>
+					</tr>
+		
+					
+				</table>
+			
+				<hr>
+				
+				<form action="goEditor" method="get">
+					<br></br> <input type="submit" class="btn btn-primary"
+						value="Create new pipeline"></input> <br></br> <br></br>
 				</form>
 			</div>
 
