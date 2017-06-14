@@ -42,7 +42,7 @@ public class KayakController {
 
 	private String propertiesConfigFilePath = "/application.properties";
 	private LinkedList<String> addedInput = new LinkedList<String>();
-	private LinkedList<Link> links = new LinkedList<Link>();
+	private LinkedList<Link> links;
 	private String isWatchpoint;
 	@Autowired
 	private PipelineRepository pipelineRepository;
@@ -156,7 +156,8 @@ public class KayakController {
 		model.addAttribute("prList", prList);
 		model.addAttribute("addedInput", addedInput);
 
-
+		links = new LinkedList<>();
+		
 		Link link = new Link();
 		link.setDxItem(dxItem);
 		link.setSxItem(sxItem);
@@ -190,8 +191,7 @@ public class KayakController {
 		pipe.setDescription(description);	
 		pipe.setLinks(links);
 		for (Link l : links) System.out.println(l.toString());
-
-
+	
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 		pipe.setUser(user);
 
@@ -219,6 +219,7 @@ public class KayakController {
 			e.printStackTrace();
 		}
 	
+		this.links=null;
 		return "editor";
 	}
 

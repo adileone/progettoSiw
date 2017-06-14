@@ -19,8 +19,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+
 @Entity
 @Table(name = "Utente")
+@JsonIgnoreType
 public class Utente implements Serializable {
 
 
