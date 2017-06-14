@@ -16,6 +16,10 @@ public class PipelineService {
 	public Iterable<Pipeline> findAll() {
 		return this.pipelineRepository.findAll();
 	}
+	
+	public Iterable<Pipeline> findById(Long id) {
+		return this.pipelineRepository.findAllById(id);
+	}
 
 	@Transactional
 	public void add(final Pipeline pipe) {

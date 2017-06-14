@@ -233,7 +233,11 @@
 					<tr th:each="pipe,iterStat : ${pipeList}">
 						<td style="padding: 0 15px 0 15px;" th:text="${pipe.name}"></td>
 						<td> ---> </td>
-						<td style="padding: 0 15px 0 15px;"><a href="/modifyPipe">modify</a></td>
+						<td style="padding: 0 15px 0 15px;"> 
+					
+						<a th:href="@{/modifyPipe(id=${pipe.id})}"> modify</a>
+
+						</td>
 					</tr>
 		
 					

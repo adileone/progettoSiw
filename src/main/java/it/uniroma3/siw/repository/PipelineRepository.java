@@ -13,6 +13,7 @@ public interface PipelineRepository extends CrudRepository<Pipeline, Long> {
 
 	List<Pipeline> findByName(String name);
 	List<Pipeline> findByUser(Utente user);
+	Iterable<Pipeline> findAllById(Long id);
 
 }
 

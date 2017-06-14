@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import it.uniroma3.siw.model.Link;
 import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Utente;
@@ -41,7 +42,7 @@ public class KayakController {
 
 	private String propertiesConfigFilePath = "/application.properties";
 	private LinkedList<String> addedInput = new LinkedList<String>();
-	private LinkedList<Link> links;
+	private LinkedList<Link> links = new LinkedList<Link>();
 	private String isWatchpoint;
 	@Autowired
 	private PipelineRepository pipelineRepository;
@@ -154,9 +155,7 @@ public class KayakController {
 
 		model.addAttribute("prList", prList);
 		model.addAttribute("addedInput", addedInput);
-
-		links = new LinkedList<>();
-
+		
 		Link link = new Link();
 		link.setDxItem(dxItem);
 		link.setSxItem(sxItem);
@@ -188,6 +187,7 @@ public class KayakController {
 		pipe.setCreationDate(new Date());
 		pipe.setName(name);
 		pipe.setDescription(description);	
+		for (Link l : links ) l.setPipeline(pipe);
 		pipe.setLinks(links);
 
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
@@ -218,6 +218,7 @@ public class KayakController {
 		}
 
 		this.links=null;
+		links= new LinkedList<Link>();
 		return "editor";
 	}
 

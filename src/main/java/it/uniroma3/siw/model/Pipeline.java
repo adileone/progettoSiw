@@ -9,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pipeline {
@@ -28,7 +31,9 @@ public class Pipeline {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
+	@JsonManagedReference
 	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="pipeline_id")
 	private List<Link> links;
 
 	@ManyToOne
@@ -85,12 +90,6 @@ public class Pipeline {
 
 	public void setUser(Utente user) {
 		this.user = user;
-	}
-
-	@Override
-	public String toString() {
-		return "Pipeline [id=" + id + ", name=" + name + ", description=" + description + ", creationDate="
-				+ creationDate + ", links=" + links + ", user=" + user + "]";
 	}
 
 }

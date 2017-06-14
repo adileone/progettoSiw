@@ -1,5 +1,6 @@
 package it.uniroma3.siw.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,9 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.uniroma3.siw.model.Link;
+import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Skill;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.model.Utente.Role;
+import it.uniroma3.siw.repository.LinkRepository;
+import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.UtenteService;
 
@@ -37,6 +42,10 @@ public class MainController {
 	UtenteService utenteService;
 	@Autowired
 	UtenteRepository utenteRepository ;
+	@Autowired
+	LinkRepository linkRepository ;
+	@Autowired
+	PipelineRepository pipelineRepository ;
 
 	// Login form
 	@RequestMapping("/login")
@@ -67,7 +76,14 @@ public class MainController {
 	}
 	
 	@GetMapping("/modifyPipe")
-	public String modifyPipe() {
+    public String listLinks(@RequestParam Long id,Model model) {
+		
+		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
+		Pipeline pipe = pipeL.get(0);
+		ArrayList <Link> linkList =(ArrayList<Link>) linkRepository.findByPipeline(pipe);
+		model.addAttribute("pipe", pipe);
+		model.addAttribute("linkList", linkList);
+		
 		return "modifyPipe";
 	}
 

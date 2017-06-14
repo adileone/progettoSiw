@@ -28,7 +28,16 @@
 		</div>
 		<hr></hr>
 		
-		ModifyPipePage
+		PipeName :<div th:text="${pipe.name}"></div>
+		
+		Links: <br><br>
+		<table>
+			<tr th:each="l,iterStat : ${linkList}">
+				<td style="padding:0 15px 0 15px;" th:text="${l.sxItem}" ></td><td>----</td>
+				<td style="padding:0 15px 0 15px;" th:text="${l.dxItem}"></td><td>:</td>
+				<td style="padding:0 15px 0 15px;" th:text="${l.stage}">
+			</tr>
+		</table>
 		
 		</div>
 		
