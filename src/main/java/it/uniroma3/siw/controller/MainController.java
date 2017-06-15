@@ -22,16 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.uniroma3.siw.model.Link;
+import it.uniroma3.siw.model.Edge;
 import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Skill;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.model.Utente.Role;
-import it.uniroma3.siw.repository.LinkRepository;
+import it.uniroma3.siw.repository.EdgeRepository;
 import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.UtenteService;
-
 
 
 //controller to access the login page
@@ -43,7 +42,7 @@ public class MainController {
 	@Autowired
 	UtenteRepository utenteRepository ;
 	@Autowired
-	LinkRepository linkRepository ;
+	EdgeRepository edgeRepository ;
 	@Autowired
 	PipelineRepository pipelineRepository ;
 
@@ -93,7 +92,7 @@ public class MainController {
 
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
 		Pipeline pipe = pipeL.get(0);
-		ArrayList <Link> linkList =(ArrayList<Link>) linkRepository.findByPipeline(pipe);
+		ArrayList <Edge> linkList =(ArrayList<Edge>) edgeRepository.findByPipeline(pipe);
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("linkList", linkList);
 

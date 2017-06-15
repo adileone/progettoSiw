@@ -26,8 +26,8 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import it.uniroma3.siw.model.Link;
+import it.uniroma3.siw.model.Edge;
+import it.uniroma3.siw.model.Node;
 import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.repository.PipelineRepository;
@@ -35,14 +35,14 @@ import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.PipelineService;
 import it.uniroma3.siw.service.UtenteService;
 
-
 @Controller
 @SuppressWarnings("unused")
 public class KayakController {
 
 	private String propertiesConfigFilePath = "/application.properties";
-	private LinkedList<String> addedInput = new LinkedList<String>();
-	private LinkedList<Link> links = new LinkedList<Link>();
+	private HashMap<Object,String> addedInput = new HashMap<Object,String>();
+	private LinkedList<Edge> edges = new LinkedList<Edge>();
+	private HashMap<String,Node> nodes = new HashMap<String,Node>();
 	private String isWatchpoint;
 	@Autowired
 	private PipelineRepository pipelineRepository;
@@ -142,28 +142,52 @@ public class KayakController {
 	@PostMapping("/addInput")
 	public String addInput(ModelMap model, @RequestParam String filename) {
 
-		addedInput.add(filename);
+		Node node = new Node();
+		node.setName(filename);
+		node.setType("input");
+		
+		nodes.put(filename,node);
+		
+		addedInput.put(filename,"input");
 		model.addAttribute("addedInput", addedInput);
 		model.addAttribute("message", "input added");				
 		model.addAttribute("prList", prList);
 
 		return "editor";
 	}
-
+	
 	@PostMapping("/addStage")
-	public String addStage(ModelMap model, @RequestParam String primitive, @RequestParam String sxItem, @RequestParam String dxItem) {
+	public String addStage(ModelMap model, @RequestParam String stage) {
+
+
+		Node node = new Node();
+		node.setName(stage);
+		node.setType("stage");
+		
+		nodes.put(stage,node);
+		
+		addedInput.put(stage,"stage");
+		model.addAttribute("addedInput", addedInput);
+		model.addAttribute("message", "stage added");				
+		model.addAttribute("prList", prList);
+
+		return "editor";
+	}
+	
+	@PostMapping("/createLink")
+	public String createLink(ModelMap model, @RequestParam String sxItem, @RequestParam String dxItem) {
 
 		model.addAttribute("prList", prList);
 		model.addAttribute("addedInput", addedInput);
 		
-		Link link = new Link();
-		link.setDxItem(dxItem);
-		link.setSxItem(sxItem);
-		link.setStage(primitive);
+		Edge edge = new Edge();
+		
+		edge.setDxItem(nodes.get(dxItem));
+		edge.setSxItem(nodes.get(sxItem));	
+	
+		edges.add(edge);
 
-		links.add(link);
-
-		model.addAttribute("message", "stage added");
+		model.addAttribute("message", "link created");
 
 		return "editor";
 	}
@@ -187,8 +211,22 @@ public class KayakController {
 		pipe.setCreationDate(new Date());
 		pipe.setName(name);
 		pipe.setDescription(description);	
-		for (Link l : links ) l.setPipeline(pipe);
-		pipe.setLinks(links);
+		
+		LinkedList<Node> nodi = new LinkedList<Node>();
+		
+		for (Edge e : edges ) {
+			e.setPipeline(pipe);
+			}
+		
+		for (String s : nodes.keySet())  {
+			Node n = nodes.get(s);
+			nodi.add(n);
+			n.setPipeline(pipe);
+			}
+		
+		
+		pipe.setNodes(nodi);
+		pipe.setEdges(edges);
 
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 		pipe.setUser(user);
@@ -217,9 +255,26 @@ public class KayakController {
 			e.printStackTrace();
 		}
 
-		this.links=null;
-		links= new LinkedList<Link>();
-		return "editor";
+		this.edges=null;
+		edges= new LinkedList<Edge>();
+		this.nodes=null;
+		nodes= new HashMap<String,Node>();
+		this.addedInput=null;
+		addedInput=new HashMap<Object,String>();
+		
+		try {
+
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+			
+			} catch (Exception e) {
+			
+				e.getMessage().toString();
+				}
+		
+		
+		return "kayakHome";
 	}
 
 	public String getUtenteConnesso() {

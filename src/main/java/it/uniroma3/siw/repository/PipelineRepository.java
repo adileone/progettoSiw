@@ -8,7 +8,6 @@ import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.Utente;
 
 
-
 public interface PipelineRepository extends CrudRepository<Pipeline, Long> {
 
 	List<Pipeline> findByName(String name);

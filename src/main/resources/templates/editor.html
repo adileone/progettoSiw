@@ -77,19 +77,33 @@
 					<form action="addStage" method="post">
 
 						<div class="form-group blu-margin">
-							Primitive : <select id="primitive" name="primitive">
+							Primitive : <select id="stage" name="stage">
 								<option th:each="operator : ${prList}" th:value="${operator}"
 									th:text="${operator}"></option>
 							</select>
 						</div>
 
-						<br>
+						<div style="float: left; padding: 0 15px 0 15px;">
+							<input type="submit" value="add stage" class="btn btn-primary" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
+
+		<br>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Add Link:</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form action="createLink" method="post">
 						<div class="form-group blu-margin">
 							<select style="float: left; padding: 0 15px 0 15px;" id="sxItem"
 								name="sxItem">
 								<option th:each="operator : ${addedInput}"
-									th:value="${operator}" th:text="${operator}"></option>
+									th:value="${operator.key}" th:text="${operator.key}"></option>
 							</select>
 
 							<div style="float: left; padding: 0 15px 0 15px;">with</div>
@@ -97,12 +111,12 @@
 							<select style="float: left; padding: 0 15px 0 15px;" id="dxItem"
 								name="dxItem">
 								<option th:each="operator : ${addedInput}"
-									th:value="${operator}" th:text="${operator}"></option>
+									th:value="${operator.key}" th:text="${operator.key}"></option>
 							</select>
 
 						</div>
 						<div style="float: left; padding: 0 15px 0 15px;">
-							<input type="submit" value="add stage" class="btn btn-primary" />
+							<input type="submit" value="create link" class="btn btn-primary" />
 						</div>
 					</form>
 				</div>
@@ -126,8 +140,8 @@
 		<br>
 
 		<form action="createPipeline" method="post">
-			Name: <input type="text" name="name" id="name">
-			<label> Description</label>
+			Name: <input type="text" name="name" id="name"> <label>
+				Description</label>
 			<textarea rows="3" id="description" name="description"></textarea>
 			<input type="submit" value="create pipeline" class="btn btn-primary" />
 		</form>

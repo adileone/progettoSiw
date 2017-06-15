@@ -34,22 +34,27 @@ public class Pipeline {
 	@JsonManagedReference
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="pipeline_id")
-	private List<Link> links;
-
+	private List<Edge> edges;
+	
+	@JsonManagedReference
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="pipeline_id")
+	private List<Node> nodes;
+	
 	@ManyToOne
 	private Utente user;
 
 
 	public Pipeline() {
-		this.links = new LinkedList<>();
+		this.edges = new LinkedList<Edge>();
 	}
 
-	public List<Link> getLinks() {
-		return links;
+	public List<Edge> getEdges() {
+		return edges;
 	}
 
-	public void setLinks(LinkedList<Link> links) {
-		this.links = links;
+	public void setEdges(List<Edge> edges) {
+		this.edges = edges;
 	}
 
 	public long getId() {
@@ -90,6 +95,14 @@ public class Pipeline {
 
 	public void setUser(Utente user) {
 		this.user = user;
+	}
+
+	public List<Node> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
 	}
 
 }

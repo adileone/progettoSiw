@@ -33,9 +33,8 @@
 		Links: <br><br>
 		<table>
 			<tr th:each="l,iterStat : ${linkList}">
-				<td style="padding:0 15px 0 15px;" th:text="${l.sxItem}" ></td><td>----</td>
-				<td style="padding:0 15px 0 15px;" th:text="${l.dxItem}"></td><td>:</td>
-				<td style="padding:0 15px 0 15px;" th:text="${l.stage}">
+				<td style="padding:0 15px 0 15px;" th:text="${l.sxItem.name}" ></td><td>----></td>
+				<td style="padding:0 15px 0 15px;" th:text="${l.dxItem.name}"></td>
 			</tr>
 		</table>
 		

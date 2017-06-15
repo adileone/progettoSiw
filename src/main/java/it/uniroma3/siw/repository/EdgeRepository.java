@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.uniroma3.siw.model.Link;
+import it.uniroma3.siw.model.Edge;
 import it.uniroma3.siw.model.Pipeline;
 
 
+public interface EdgeRepository extends CrudRepository<Edge, Long> {
 
-public interface LinkRepository extends CrudRepository<Link, Long> {
-
-	List<Link> findByPipeline(Pipeline pipe);
+	List<Edge> findByPipeline(Pipeline pipe);
 
 }
 
