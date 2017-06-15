@@ -61,7 +61,20 @@ public class MainController {
 	}
 
 	@GetMapping("/kayakHome")
-	public String goKayak() {
+	public String goKayak(ModelMap model) {
+
+		try {
+
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+			
+			} catch (Exception e) {
+			
+				e.getMessage().toString();
+				}
+		
 		return "kayakHome";
 	}
 
@@ -74,17 +87,39 @@ public class MainController {
 	public String editor() {
 		return "editor";
 	}
-	
+
 	@GetMapping("/modifyPipe")
-    public String listLinks(@RequestParam Long id,Model model) {
-		
+	public String modifyPipe(@RequestParam Long id,Model model) {
+
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
 		Pipeline pipe = pipeL.get(0);
 		ArrayList <Link> linkList =(ArrayList<Link>) linkRepository.findByPipeline(pipe);
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("linkList", linkList);
-		
+
 		return "modifyPipe";
+	}
+
+	@GetMapping("/removePipe")
+	public String listLinks(@RequestParam Long id,Model model) {
+
+		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
+		Pipeline pipe = pipeL.get(0);
+		pipelineRepository.delete(pipe);
+		
+		try {
+
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+			
+			} catch (Exception e) {
+			
+				e.getMessage().toString();
+				}
+
+		return "kayakHome";
 	}
 
 	@GetMapping("/userPage")
@@ -173,6 +208,12 @@ public class MainController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "redirect:/login?logout";
+	}
+
+	public String getUtenteConnesso() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		return name;
 	}
 
 }

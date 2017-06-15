@@ -228,14 +228,4 @@ public class KayakController {
 		return name;
 	}
 
-	@GetMapping("/listUserPipes")
-	public String listUserPipes(ModelMap model) {
-		ArrayList<Pipeline> pipeList = new ArrayList<>();
-		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
-		pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
-		model.addAttribute("pipeList", pipeList);
-		return "kayakHome";
-	}
-
-
 }

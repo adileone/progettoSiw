@@ -222,29 +222,25 @@
 
 			<div id="pipelines" class="tab-pane fade">
 
-				<form action="listUserPipes" method="get">
-					<br></br> <input type="submit" class="btn btn-primary"
-						value="Get user pipelines"></input> <br></br> <br></br>
-				</form>
+				User Pipelines :
 
 
 				<table>
-				
+
 					<tr th:each="pipe,iterStat : ${pipeList}">
 						<td style="padding: 0 15px 0 15px;" th:text="${pipe.name}"></td>
-						<td> ---> </td>
-						<td style="padding: 0 15px 0 15px;"> 
-					
-						<a th:href="@{/modifyPipe(id=${pipe.id})}"> modify</a>
-
-						</td>
+						<td>---></td>
+						<td style="padding: 0 15px 0 15px;"><a
+							th:href="@{/modifyPipe(id=${pipe.id})}"> modify</a></td>
+						<td style="padding: 0 15px 0 15px;"><a
+							th:href="@{/removePipe(id=${pipe.id})}"> remove</a></td>
 					</tr>
-		
-					
+
+
 				</table>
-			
+
 				<hr>
-				
+
 				<form action="goEditor" method="get">
 					<br></br> <input type="submit" class="btn btn-primary"
 						value="Create new pipeline"></input> <br></br> <br></br>
