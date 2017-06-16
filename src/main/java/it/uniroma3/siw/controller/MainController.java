@@ -100,7 +100,7 @@ public class MainController {
 	}
 
 	@GetMapping("/removePipe")
-	public String listLinks(@RequestParam Long id,Model model) {
+	public String removePipe(@RequestParam Long id,Model model) {
 
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
 		Pipeline pipe = pipeL.get(0);
@@ -132,7 +132,32 @@ public class MainController {
 	}
 
 	@GetMapping("/management")
-	public String management() {
+	public String management(ModelMap model) {
+		
+		try {
+
+			ArrayList<Utente> userList = new ArrayList<Utente>();
+			userList = (ArrayList<Utente>) utenteRepository.findAll();
+			model.addAttribute("userList", userList);	
+			
+			} catch (Exception e) {
+			
+				e.getMessage().toString();
+				}
+		
+		
+		try {
+
+			ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
+			kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
+			model.addAttribute("kayakPList", kayakPList);	
+			
+			} catch (Exception e) {
+			
+				e.getMessage().toString();
+				}
+		
+		
 		return "management";
 	}
 

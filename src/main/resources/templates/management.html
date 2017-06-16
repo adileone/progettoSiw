@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" 
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-<title>Login</title>
+<title>Kayak Management</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 <script
@@ -14,24 +13,285 @@
 </head>
 
 <body>
-
-		<div id="container" class="container">
+<br></br>
+	<div id="container" class="container">
 
 		<img src="images/kayak.png" width="250px" align="left" /> <img
 			src="images/logoRoma3.png" width="150px" align="right" /> <br /> <br />
 		<br></br> <br></br>
 		<div align="right">
-			You are logged in as <a href="/userPage"><span sec:authentication="name"></span></a><br>
-			 <a href="/logout" > logout</a>
+			You are logged in as <a href="/userPage"><span
+				sec:authentication="name"></span></a><br> <a href="/logout">
+				logout</a>
 		</div>
 		<div align="left">
 			<a href="/kayakHome"> << back to home </a>
 		</div>
+		<hr></hr>
 		
+		<div th:if="${succMessage}" style="color: green;">
+			<span th:text="${succMessage}">title</span>
 		</div>
+		<div th:if="${errMessage}" style="color: red;">
+			<span th:text="${errMessage}">title</span>
+		</div>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="pill" href="#main">Manage
+					Users</a></li>
+			<li><a data-toggle="pill" href="#pipeMan">Manage Pipelines</a></li>
+		</ul>
+
+		<div id="content" class="tab-content">
+
+			<div id="main" class="tab-pane fade in active">
+
+				<br> Kayak Users : <br><br>
+
+				<table>
+					<tr>
+						<td style="padding: 0 15px 0 15px;" th:text="Id"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="Username"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="Email"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="Role"></td>
+									
+					</tr>
+					<tr><td><br/></td></tr>
+					<tr th:each="user,iterStat : ${userList}">
+						<td style="padding: 0 15px 0 15px;" th:text="${user.id}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${user.username}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${user.email}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${user.role}"></td>
+						<td>---></td>
+						<td style="padding: 0 15px 0 15px;"><a
+							th:href="@{/removeUser(id=${user.id})}"> remove</a></td>
+					</tr>
+
+				</table>
+
+				<hr>
+
+				<div class="panel-group" id="accordion">
+					<br>
+
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse1">Add new user</a>
+								</h4>
+							</div>
+							<div id="collapse1" class="panel-collapse collapse in">
+
+
+
+								<div class="panel-body">
+									<form name="f" th:action="@{/addUser}" method="post">
+
+
+										<br>
+										<div th:if="${message}" class="alert alert-error"
+											style="color: red">username already exists, please
+											choose other</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input id="username"
+												type="text" class="form-control" name="username"
+												placeholder="Username">
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-envelope"></i></span> <input id="email"
+												type="text" class="form-control" name="email"
+												placeholder="Email">
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-lock"></i></span> <input id="password"
+												type="password" class="form-control" name="password"
+												placeholder="Password">
+										</div>
+										<br>
+
+										<div class="row">
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Skill: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="skill1" name="skill1">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Value: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="value1" name="value1">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+											<br> <br>
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Skill: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="skill2" name="skill2">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Value: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="value2" name="value2">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+											<br> <br>
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Skill: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="skill3" name="skill3">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+
+											<div class="col-lg-6">
+												<div class="input-group">
+													<span class="input-group-addon"> Value: </span> <input
+														type="text" class="form-control" aria-label="..."
+														id="value3" name="value3">
+												</div>
+												<!-- /input-group -->
+											</div>
+											<!-- /.col-lg-6 -->
+
+
+										</div>
+										<!-- /.row -->
+										<br>
+										<br> <input type="submit" class="btn btn-default"
+											value="Signin">
+
+									</form>
+								</div>
+
+
+							</div>
+
+
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse2">Add new admin</a>
+								</h4>
+							</div>
+							<div id="collapse2" class="panel-collapse collapse">
+
+
+								<div class="panel-body">
+									<form name="f" th:action="@{/addAdmin}" method="post">
+
+
+										<br>
+										<div th:if="${message}" class="alert alert-error"
+											style="color: red">username already exists, please
+											choose other</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input id="username"
+												type="text" class="form-control" name="username"
+												placeholder="Username">
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-envelope"></i></span> <input id="email"
+												type="text" class="form-control" name="email"
+												placeholder="Email">
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-lock"></i></span> <input id="password"
+												type="password" class="form-control" name="password"
+												placeholder="Password">
+										</div>
+										<br>
+										<br> <input type="submit" class="btn btn-default"
+											value="Signin">
+
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+				<div id="pipeMan" class="tab-pane fade">
+
+				<br> Kayak Pipelines : <br><br>
+
+				<table>
+					<tr>
+						<td style="padding: 0 15px 0 15px;" th:text="Id"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="Name"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="Description"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="User"></td>
+									
+					</tr>
+					<tr><td><br/></td></tr>
+					<tr th:each="p,iterStat : ${kayakPList}">
+						<td style="padding: 0 15px 0 15px;" th:text="${p.id}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${p.name}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${p.description}"></td>
+						<td style="padding: 0 15px 0 15px;" th:text="${p.user.username}"></td>
+						<td>---></td>
+						<td style="padding: 0 15px 0 15px;"><a
+							th:href="@{/watchPipe(id=${p.id})}"> watch</a></td>
+					</tr>
+
+				</table>
+	
+			</div>
+			
+		</div>
+	</div>
+
+	<br>
+		<br>
+		<br>
+		<br>	
+		<br>
 		
-		MAnagementPage
-		
+
 	<div class="panel-footer" align="center"
 		style="position: fixed; bottom: 0; width: 100%;">
 		<font style="color: #111">Copyright @2017 <a

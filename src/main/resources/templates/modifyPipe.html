@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-<title>Profile</title>
+<title>Pipeline</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 <script
@@ -25,6 +25,9 @@
 		</div>
 		<div align="left">
 			<a href="/kayakHome"> << back to home </a>
+		</div>
+			<div align="left" sec:authorize="hasRole('ROLE_ADMIN')">
+			<a href="/management"> << back to Kayak Management </a>
 		</div>
 		<hr></hr>
 		
