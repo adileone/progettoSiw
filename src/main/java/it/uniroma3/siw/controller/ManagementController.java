@@ -51,7 +51,7 @@ public class ManagementController {
 			user.setDataCreazione(new Date());
 			user.setRole(Role.ROLE_ADMIN);
 			utenteService.add(user);	
-		
+
 			try {
 
 				ArrayList<Utente> userList = new ArrayList<Utente>();
@@ -62,25 +62,25 @@ public class ManagementController {
 
 				e.getMessage().toString();
 			}
-			
+
 			try {
 
 				ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 				kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 				model.addAttribute("kayakPList", kayakPList);	
-				
-				} catch (Exception e) {
-				
-					e.getMessage().toString();
-					}
-			
+
+			} catch (Exception e) {
+
+				e.getMessage().toString();
+			}
+
 			model.addAttribute("succMessage","admin added");
 			return "management";
 
 		}
 
 		else {
-			
+
 			try {
 
 				ArrayList<Utente> userList = new ArrayList<Utente>();
@@ -91,17 +91,17 @@ public class ManagementController {
 
 				e.getMessage().toString();
 			}
-			
+
 			try {
 
 				ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 				kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 				model.addAttribute("kayakPList", kayakPList);	
-				
-				} catch (Exception e) {
-				
-					e.getMessage().toString();
-					}
+
+			} catch (Exception e) {
+
+				e.getMessage().toString();
+			}
 
 			model.addAttribute("errMessage","admin " + username + " already exists");
 			return "management";
@@ -158,7 +158,7 @@ public class ManagementController {
 			user.setSkills(skills);
 			user.setRole(Role.ROLE_USER);
 			utenteService.add(user);
-			
+
 			try {
 
 				ArrayList<Utente> userList = new ArrayList<Utente>();
@@ -170,25 +170,25 @@ public class ManagementController {
 				e.getMessage().toString();
 			}
 
-			
+
 			try {
 
 				ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 				kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 				model.addAttribute("kayakPList", kayakPList);	
-				
-				} catch (Exception e) {
-				
-					e.getMessage().toString();
-					}
-			
+
+			} catch (Exception e) {
+
+				e.getMessage().toString();
+			}
+
 			model.addAttribute("succMessage","user added");
 			return "management";
 
 		}
 
 		else {
-			
+
 			try {
 
 				ArrayList<Utente> userList = new ArrayList<Utente>();
@@ -199,17 +199,17 @@ public class ManagementController {
 
 				e.getMessage().toString();
 			}
-			
+
 			try {
 
 				ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 				kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 				model.addAttribute("kayakPList", kayakPList);	
-				
-				} catch (Exception e) {
-				
-					e.getMessage().toString();
-					}
+
+			} catch (Exception e) {
+
+				e.getMessage().toString();
+			}
 
 			model.addAttribute("errMessage","user " + username + " already exists");
 			return "management";
@@ -234,24 +234,24 @@ public class ManagementController {
 
 			e.getMessage().toString();
 		}
-		
+
 		try {
 
 			ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 			kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 			model.addAttribute("kayakPList", kayakPList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
-		
-		
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+
+
 		return "management";
 
 	}
-	
-	
+
+
 	@GetMapping("/watchPipe")
 	public String modifyPipe(@RequestParam Long id,Model model) {
 

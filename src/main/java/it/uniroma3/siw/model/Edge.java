@@ -67,7 +67,7 @@ public class Edge {
 
 	@Override
 	public String toString() {
-		return "Edge [id=" + id + ", sxItem=" + sxItem + ", dxItem=" + dxItem + ", pipeline=" + pipeline + "]";
+		return "Edge [id=" + id + ", sxItem=" + sxItem + ", dxItem=" + dxItem + "]";
 	}
 
 	

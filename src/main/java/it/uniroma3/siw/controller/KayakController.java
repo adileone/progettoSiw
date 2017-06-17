@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,13 +28,18 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.uniroma3.siw.model.Edge;
+import it.uniroma3.siw.model.InputNode;
 import it.uniroma3.siw.model.Node;
 import it.uniroma3.siw.model.Pipeline;
+import it.uniroma3.siw.model.StageNode;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.PipelineService;
 import it.uniroma3.siw.service.UtenteService;
+
+
+
 
 @Controller
 @SuppressWarnings("unused")
@@ -142,12 +148,11 @@ public class KayakController {
 	@PostMapping("/addInput")
 	public String addInput(ModelMap model, @RequestParam String filename) {
 
-		Node node = new Node();
-		node.setName(filename);
-		node.setType("input");
-		
+		InputNode node = new InputNode();
+		node.setFileName(filename);
+
 		nodes.put(filename,node);
-		
+
 		addedInput.put(filename,"input");
 		model.addAttribute("addedInput", addedInput);
 		model.addAttribute("message", "input added");				
@@ -155,17 +160,15 @@ public class KayakController {
 
 		return "editor";
 	}
-	
+
 	@PostMapping("/addStage")
 	public String addStage(ModelMap model, @RequestParam String stage) {
 
+		StageNode node = new StageNode();
+		node.setStageType(stage);
 
-		Node node = new Node();
-		node.setName(stage);
-		node.setType("stage");
-		
 		nodes.put(stage,node);
-		
+
 		addedInput.put(stage,"stage");
 		model.addAttribute("addedInput", addedInput);
 		model.addAttribute("message", "stage added");				
@@ -173,18 +176,18 @@ public class KayakController {
 
 		return "editor";
 	}
-	
+
 	@PostMapping("/createLink")
 	public String createLink(ModelMap model, @RequestParam String sxItem, @RequestParam String dxItem) {
 
 		model.addAttribute("prList", prList);
 		model.addAttribute("addedInput", addedInput);
-		
+
 		Edge edge = new Edge();
-		
+
 		edge.setDxItem(nodes.get(dxItem));
 		edge.setSxItem(nodes.get(sxItem));	
-	
+
 		edges.add(edge);
 
 		model.addAttribute("message", "link created");
@@ -211,20 +214,20 @@ public class KayakController {
 		pipe.setCreationDate(new Date());
 		pipe.setName(name);
 		pipe.setDescription(description);	
-		
+
 		LinkedList<Node> nodi = new LinkedList<Node>();
-		
+
 		for (Edge e : edges ) {
 			e.setPipeline(pipe);
-			}
-		
+		}
+
 		for (String s : nodes.keySet())  {
 			Node n = nodes.get(s);
 			nodi.add(n);
 			n.setPipeline(pipe);
-			}
-		
-		
+		}
+
+
 		pipe.setNodes(nodi);
 		pipe.setEdges(edges);
 
@@ -247,6 +250,19 @@ public class KayakController {
 			String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pipe);
 			System.out.println(jsonInString);
 
+			Document doc = Document.parse(jsonInString);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+			Map<String, String> vars = new HashMap<String,String>();
+			vars.put("doc", jsonInString);
+
+			RestTemplate restTemplate = new RestTemplate();
+			String url = "http://localhost:8080/rest/createPipeline?doc={doc}";
+			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
+
+
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -261,19 +277,18 @@ public class KayakController {
 		nodes= new HashMap<String,Node>();
 		this.addedInput=null;
 		addedInput=new HashMap<Object,String>();
-		
+
 		try {
 
 			ArrayList<Pipeline> pipeList = new ArrayList<>();
 			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
 			model.addAttribute("pipeList", pipeList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
-		
-		
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+
 		return "kayakHome";
 	}
 

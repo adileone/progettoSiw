@@ -33,6 +33,8 @@ import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.UtenteService;
 
 
+
+
 //controller to access the login page
 @Controller
 public class MainController {
@@ -68,12 +70,12 @@ public class MainController {
 			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
 			model.addAttribute("pipeList", pipeList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
-		
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+
 		return "kayakHome";
 	}
 
@@ -96,6 +98,11 @@ public class MainController {
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("linkList", linkList);
 
+		ArrayList <String> linkListStamp = new ArrayList<String>();
+		for (Edge e : linkList) linkListStamp.add(e.getSxItem().toString() + " ----> " + e.getDxItem().toString());
+
+		model.addAttribute("linkListStamp", linkListStamp);
+
 		return "modifyPipe";
 	}
 
@@ -105,18 +112,18 @@ public class MainController {
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(id);
 		Pipeline pipe = pipeL.get(0);
 		pipelineRepository.delete(pipe);
-		
+
 		try {
 
 			ArrayList<Pipeline> pipeList = new ArrayList<>();
 			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
 			model.addAttribute("pipeList", pipeList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
 
 		return "kayakHome";
 	}
@@ -133,31 +140,31 @@ public class MainController {
 
 	@GetMapping("/management")
 	public String management(ModelMap model) {
-		
+
 		try {
 
 			ArrayList<Utente> userList = new ArrayList<Utente>();
 			userList = (ArrayList<Utente>) utenteRepository.findAll();
 			model.addAttribute("userList", userList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
-		
-		
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+
+
 		try {
 
 			ArrayList<Pipeline> kayakPList = new ArrayList<Pipeline>();
 			kayakPList = (ArrayList<Pipeline>) pipelineRepository.findAll();
 			model.addAttribute("kayakPList", kayakPList);	
-			
-			} catch (Exception e) {
-			
-				e.getMessage().toString();
-				}
-		
-		
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+
+
 		return "management";
 	}
 
