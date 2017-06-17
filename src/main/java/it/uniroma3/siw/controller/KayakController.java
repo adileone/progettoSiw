@@ -261,6 +261,8 @@ public class KayakController {
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "http://localhost:8080/rest/createPipeline?doc={doc}";
 			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
+			
+			System.out.println(result);
 
 
 		} catch (JsonGenerationException e) {
