@@ -237,6 +237,30 @@ public class MainController {
 
 
 	}
+	
+	@PostMapping("updateSkills") 
+	public String updateSkills (@RequestParam String skill1, @RequestParam String value1, @RequestParam String id, ModelMap model) {
+		
+		
+		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+		
+		Skill s = new Skill();
+		s.setName(skill1);
+		s.setValue(Double.parseDouble(value1));
+		s.setUser(user);
+		
+		List<Skill> skill = user.getSkills();
+		skill.add(s);
+		
+		user.setSkills(skill);
+		
+		utenteService.add(user);
+		
+		model.addAttribute("user",user);
+		
+		return "userPage";
+		
+	}
 
 	@GetMapping(value="/logout")
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
