@@ -35,6 +35,11 @@
 <!--cdn di jquery.confirm -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.0.3/jquery-confirm.min.js"></script>
+<style>
+input:invalid {
+    border: 1px solid red;
+}
+</style>
 </head>
 <body>
 	<br></br>
@@ -50,7 +55,7 @@
 
 			<br>
 			<div th:if="${message}" class="alert alert-error"
-				style="color: red">username already exists, please choose other </div>
+				style="color: red" ><span th:text="${message}">title</span></div>
 			<br>
 			<div class="input-group">
 				<span class="input-group-addon"><i
@@ -62,7 +67,7 @@
 			<div class="input-group">
 				<span class="input-group-addon"><i
 					class="glyphicon glyphicon-envelope"></i></span> <input id="email"
-					type="text" class="form-control" name="email" placeholder="Email">
+					type="email" class="form-control" name="email" placeholder="Email">
 			</div>
 			<br>
 			<div class="input-group">

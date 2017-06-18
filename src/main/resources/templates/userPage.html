@@ -27,17 +27,48 @@
 			<a href="/kayakHome"> << back to home </a>
 		</div>
 		<hr></hr>
-		<br></br> Profile: <br></br> 
-		Username : <span th:text="${user.username}" /></span><br></br>
-		
-		Skills: <br><br>
+		<br></br> Profile: <br></br> Username : <span
+			th:text="${user.username}" /></span><br></br> Skills: <br> <br>
 		<table>
 			<tr th:each="skill,iterStat : ${user.skills}">
-				<td style="padding:0 15px 0 15px;" th:text="${skill.name}" ></td><td>:</td>
-				<td style="padding:0 15px 0 15px;" th:text="${skill.value}"></td>
+				<td style="padding: 0 15px 0 15px;" th:text="${skill.name}"></td>
+				<td>:</td>
+				<td style="padding: 0 15px 0 15px;" th:text="${skill.value}"></td>
 			</tr>
 		</table>
+		<hr>
+
+		<form name="f" th:action="@{/updateSkills}" method="post">
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Skill: </span> <input type="text"
+							class="form-control" aria-label="..." id="skill1" name="skill1">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> Value: </span> <input type="text"
+							class="form-control" aria-label="..." id="value1" name="value1">
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+
+				<br> <br> <br><input type="submit" class="btn btn-default"
+					value="Update Skills">
+
+
+			</div>
+		</form>
 	</div>
+
+
 	<div class="panel-footer" align="center"
 		style="position: fixed; bottom: 0; width: 100%;">
 		<font style="color: #111">Copyright @2017 <a
