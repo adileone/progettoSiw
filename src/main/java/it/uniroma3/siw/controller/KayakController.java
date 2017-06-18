@@ -204,6 +204,59 @@ public class KayakController {
 		return "editor";
 	}
 
+	@GetMapping("/submitPipeline")
+	public String submitPipeline(ModelMap model, @RequestParam Long id) {
+		
+		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(Long.valueOf(id));
+		Pipeline pipe = pipeL.get(0);
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+
+			// Convert object to JSON string and pretty print
+			String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pipe);
+			System.out.println(jsonInString);
+
+			Document doc = Document.parse(jsonInString);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+			Map<String, String> vars = new HashMap<String,String>();
+			vars.put("doc", jsonInString);
+
+			RestTemplate restTemplate = new RestTemplate();
+			String url = "http://localhost:8080/rest/getPipeline?doc={doc}";
+			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
+			
+			System.out.println(result);
+
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+		
+		model.addAttribute("message","pipeline executed");
+		return "kayakHome";
+	}
+	
 	@PostMapping("/createPipeline")
 	public String createPipeline(ModelMap model, @RequestParam String name, @RequestParam String description) {
 
@@ -238,37 +291,6 @@ public class KayakController {
 		model.addAttribute("addedInput", addedInput);
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("message", "pipeline created and saved");
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-
-			// Convert object to JSON string and pretty print
-			String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pipe);
-			System.out.println(jsonInString);
-
-			Document doc = Document.parse(jsonInString);
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-			Map<String, String> vars = new HashMap<String,String>();
-			vars.put("doc", jsonInString);
-
-			RestTemplate restTemplate = new RestTemplate();
-			String url = "http://localhost:8080/rest/createPipeline?doc={doc}";
-			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
-			
-			System.out.println(result);
-
-
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		this.edges=null;
 		edges= new LinkedList<Edge>();
