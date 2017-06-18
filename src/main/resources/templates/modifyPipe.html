@@ -26,22 +26,115 @@
 		<div align="left">
 			<a href="/kayakHome"> << back to home </a>
 		</div>
-			<div align="left" sec:authorize="hasRole('ROLE_ADMIN')">
+		<div align="left" sec:authorize="hasRole('ROLE_ADMIN')">
 			<a href="/management"> << back to Kayak Management </a>
 		</div>
 		<hr></hr>
-		
-		PipeName :<div th:text="${pipe.name}"></div>
-		
-		Links: <br><br>
+		<br> Name:
+		<div th:text="${pipe.name}"></div>
+		<br> Description :
+		<div th:text="${pipe.description}"></div>
+		<br> Edges: <br> <br>
 		<table>
 			<tr th:each="l,iterStat : ${linkListStamp}">
-				<td style="padding:0 15px 0 15px;" th:text="${l}" ></td>
+				<td style="padding: 0 15px 0 15px;" th:text="${l}"></td>
 			</tr>
 		</table>
-		
+
+		<hr>
+		<br>
+		<form name="f" th:action="@{/removeEdge(pipeId=${pipe.id})}"
+			method="post">
+			Remove Edge by id : <input type="text" id="id" name="id"> <input
+				type="submit" value="remove edge" class="btn btn-primary">
+		</form>
+		<br>
+
+		<hr>
+
+		<div class="panel panel-default">
+
+			<div class="panel-heading">Add input :</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form name="f" th:action="@{/addInputPipe(pipeId=${pipe.id})}"
+						method="post">
+						Filename : <input type="text" id="filename" name="filename">
+						<br> <br> <input type="submit" value="add filename"
+							class="btn btn-primary" />
+					</form>
+				</div>
+			</div>
 		</div>
-		
-		</body>
-		</html>
-		
+
+		<br>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Add Stage:</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form name="f" th:action="@{/addStagePipe(pipeId=${pipe.id})}"
+						method="post">
+						<div class="form-group blu-margin">
+							Primitive : <select id="stage" name="stage">
+								<option th:each="operator : ${prList}" th:value="${operator}"
+									th:text="${operator}"></option>
+							</select>
+						</div>
+
+						<div style="float: left; padding: 0 15px 0 15px;">
+							<input type="submit" value="add stage" class="btn btn-primary" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Add Link:</div>
+			<div id="collapse2" class="panel">
+				<div class="panel-body">
+					<form name="f" th:action="@{/createLinkPipe(pipeId=${pipe.id})}"
+						method="post">
+						<div class="form-group blu-margin">
+							<select style="float: left; padding: 0 15px 0 15px;" id="sxItem"
+								name="sxItem">
+								<option th:each="operator : ${addedInput}"
+									th:value="${operator.key}" th:text="${operator.key}"></option>
+							</select>
+
+							<div style="float: left; padding: 0 15px 0 15px;">with</div>
+
+							<select style="float: left; padding: 0 15px 0 15px;" id="dxItem"
+								name="dxItem">
+								<option th:each="operator : ${addedInput}"
+									th:value="${operator.key}" th:text="${operator.key}"></option>
+							</select>
+
+						</div>
+
+						<div style="float: left; padding: 0 15px 0 15px;">
+							<input type="submit" value="create link" class="btn btn-primary" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+	<div class="panel-footer" align="center"
+		style="position: fixed; bottom: 0; width: 100%;">
+		<font style="color: #111">Copyright @2017 <a
+			href="http://mysite.com/">mysite.com</a>, All Rights Reserved.
+		</font>
+	</div>
+
+</body>
+</html>

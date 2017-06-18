@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import it.uniroma3.siw.model.Edge;
 import it.uniroma3.siw.model.Pipeline;
@@ -30,9 +31,6 @@ import it.uniroma3.siw.repository.EdgeRepository;
 import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.UtenteService;
-
-
-
 
 //controller to access the login page
 @Controller
@@ -46,6 +44,10 @@ public class MainController {
 	EdgeRepository edgeRepository ;
 	@Autowired
 	PipelineRepository pipelineRepository ;
+
+	private RestTemplate restTemplate = new RestTemplate();
+	@SuppressWarnings("unchecked")
+	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://localhost:8080/rest/primitiveList", LinkedList.class);
 
 	// Login form
 	@RequestMapping("/login")
@@ -98,8 +100,9 @@ public class MainController {
 		model.addAttribute("linkList", linkList);
 
 		ArrayList <String> linkListStamp = new ArrayList<String>();
-		for (Edge e : linkList) linkListStamp.add(e.getSxItem().toString() + " ----> " + e.getDxItem().toString());
+		for (Edge e : linkList) linkListStamp.add("id : " + e.getId() + " items : " +  e.getSxItem().toString() + " ----> " + e.getDxItem().toString());
 
+		model.addAttribute("prList", prList);
 		model.addAttribute("linkListStamp", linkListStamp);
 
 		return "modifyPipe";
@@ -210,18 +213,18 @@ public class MainController {
 			Utente user = new Utente();
 			user.setUsername(username);
 			user.setPassword(new BCryptPasswordEncoder().encode(password));
-			
-			if (utenteRepository.findByEmail(email).isEmpty()) {
-		
-			user.setEmail(email);
-			user.setDataCreazione(new Date());
-			user.setSkills(skills);
-			user.setRole(Role.ROLE_USER);
-			utenteService.add(user);	
 
-			model.addAttribute("message","you have been registered, please login");
-			return "login";
-		}
+			if (utenteRepository.findByEmail(email).isEmpty()) {
+
+				user.setEmail(email);
+				user.setDataCreazione(new Date());
+				user.setSkills(skills);
+				user.setRole(Role.ROLE_USER);
+				utenteService.add(user);	
+
+				model.addAttribute("message","you have been registered, please login");
+				return "login";
+			}
 			else { user = null;
 			model.addAttribute("message", "email already inserted, please choose other");
 			return "signin";}
@@ -237,29 +240,29 @@ public class MainController {
 
 
 	}
-	
+
 	@PostMapping("updateSkills") 
 	public String updateSkills (@RequestParam String skill1, @RequestParam String value1, @RequestParam String id, ModelMap model) {
-		
-		
+
+
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
-		
+
 		Skill s = new Skill();
 		s.setName(skill1);
 		s.setValue(Double.parseDouble(value1));
 		s.setUser(user);
-		
+
 		List<Skill> skill = user.getSkills();
 		skill.add(s);
-		
+
 		user.setSkills(skill);
-		
+
 		utenteService.add(user);
-		
+
 		model.addAttribute("user",user);
-		
+
 		return "userPage";
-		
+
 	}
 
 	@GetMapping(value="/logout")

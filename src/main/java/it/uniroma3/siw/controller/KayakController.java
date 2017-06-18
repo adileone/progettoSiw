@@ -38,9 +38,6 @@ import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.PipelineService;
 import it.uniroma3.siw.service.UtenteService;
 
-
-
-
 @Controller
 @SuppressWarnings("unused")
 public class KayakController {
