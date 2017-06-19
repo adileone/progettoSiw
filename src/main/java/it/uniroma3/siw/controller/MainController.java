@@ -64,11 +64,25 @@ public class MainController {
 
 	@GetMapping("/kayakHome")
 	public String goKayak(ModelMap model) {
+		
+		Utente user = new Utente();
+		
+		try {
+			 user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			
+			}catch (Exception e) {			
+				user.setUsername("admin");
+				user.setDataCreazione(new Date());
+				user.setEmail("default admin");
+				user.setRole(Role.ROLE_ADMIN);
+				utenteService.add(user);
+			}
+		
 
 		try {
 
 			ArrayList<Pipeline> pipeList = new ArrayList<>();
-			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
 			model.addAttribute("pipeList", pipeList);	
 

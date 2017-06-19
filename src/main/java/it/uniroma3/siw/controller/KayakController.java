@@ -33,6 +33,7 @@ import it.uniroma3.siw.model.Node;
 import it.uniroma3.siw.model.Pipeline;
 import it.uniroma3.siw.model.StageNode;
 import it.uniroma3.siw.model.Utente;
+import it.uniroma3.siw.model.Utente.Role;
 import it.uniroma3.siw.repository.PipelineRepository;
 import it.uniroma3.siw.repository.UtenteRepository;
 import it.uniroma3.siw.service.PipelineService;
@@ -61,35 +62,38 @@ public class KayakController {
 	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://localhost:8080/rest/primitiveList", LinkedList.class);
 
 	@GetMapping("/refresh")
-	public String refresh() {
+	public String refresh(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject("http://localhost:8080/rest/refresh", String.class);
 		System.out.println(result + "  -----  > refresh ok");
+		model.addAttribute("resultRefresh",result);
 		return "kayakHome";
 	}
 
 	@GetMapping("/list")
-	public String list() {
+	public String list(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject("http://localhost:8080/rest/list", String.class);
 		System.out.println(result + "  ------- > list ok"); 
+		model.addAttribute("resultList",result);
 		return "kayakHome";
 	}
 
 	@GetMapping("/reset")
-	public String reset() {
+	public String reset(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject("http://localhost:8080/rest/reset", String.class);
 		System.out.println(result + "  ------- > reset ok"); 
+		model.addAttribute("resultReset",result);
 		return "kayakHome";
 	}
 
 
 	@PostMapping("/insert")
-	public String insert(@RequestParam("file") MultipartFile file , @RequestParam("header") String header,
+	public String insert(ModelMap model, @RequestParam("file") MultipartFile file , @RequestParam("header") String header,
 			@RequestParam("categoryLabel") String categoryLabel, @RequestParam("separator") String separator, @RequestParam("description") String description) throws IOException {
 
 
@@ -130,6 +134,8 @@ public class KayakController {
 		String result = restTemplate.postForObject(url,headers,String.class,vars);
 
 		System.out.println(result);
+		
+		model.addAttribute("resultInsert",result);
 
 		return "kayakHome";
 	}
@@ -231,6 +237,7 @@ public class KayakController {
 			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
 			
 			System.out.println(result);
+			model.addAttribute("message",result);
 
 
 		} catch (JsonGenerationException e) {
@@ -253,13 +260,15 @@ public class KayakController {
 			e.getMessage().toString();
 		}
 		
-		model.addAttribute("message","pipeline executed");
+		
 		return "kayakHome";
 	}
 	
 	@PostMapping("/createPipeline")
 	public String createPipeline(ModelMap model, @RequestParam String name, @RequestParam String description) {
 
+	
+		
 		Pipeline pipe = new Pipeline();
 		pipe.setCreationDate(new Date());
 		pipe.setName(name);
@@ -281,8 +290,10 @@ public class KayakController {
 		pipe.setNodes(nodi);
 		pipe.setEdges(edges);
 
+		
 		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
 		pipe.setUser(user);
+		
 
 		System.out.println(pipe.toString());
 		pipelineService.add(pipe);
