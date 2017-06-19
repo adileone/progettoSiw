@@ -59,13 +59,13 @@ public class KayakController {
 
 	private RestTemplate restTemplate = new RestTemplate();
 	@SuppressWarnings("unchecked")
-	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://localhost:8080/rest/primitiveList", LinkedList.class);
+	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/primitiveList", LinkedList.class);
 
 	@GetMapping("/refresh")
 	public String refresh(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:8080/rest/refresh", String.class);
+		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/refresh", String.class);
 		System.out.println(result + "  -----  > refresh ok");
 		model.addAttribute("resultRefresh",result);
 		return "kayakHome";
@@ -75,7 +75,7 @@ public class KayakController {
 	public String list(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:8080/rest/list", String.class);
+		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/list", String.class);
 		System.out.println(result + "  ------- > list ok"); 
 		model.addAttribute("resultList",result);
 		return "kayakHome";
@@ -85,7 +85,7 @@ public class KayakController {
 	public String reset(ModelMap model) {
 
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:8080/rest/reset", String.class);
+		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/reset", String.class);
 		System.out.println(result + "  ------- > reset ok"); 
 		model.addAttribute("resultReset",result);
 		return "kayakHome";
@@ -127,7 +127,7 @@ public class KayakController {
 
 		vars.put("description", description);
 
-		String url = "http://localhost:8080/rest/insert?filePath={fileName}&hasHeader={hasHeader}&charSeparator={separator}&categoryLabel={categoryLabel}&description={description}";
+		String url = "http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/insert?filePath={fileName}&hasHeader={hasHeader}&charSeparator={separator}&categoryLabel={categoryLabel}&description={description}";
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -233,7 +233,7 @@ public class KayakController {
 			vars.put("doc", jsonInString);
 
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "http://localhost:8080/rest/getPipeline?doc={doc}";
+			String url = "http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/getPipeline?doc={doc}";
 			Document result = restTemplate.postForObject(url,headers,Document.class,vars);
 			
 			System.out.println(result);

@@ -47,7 +47,7 @@ public class MainController {
 
 	private RestTemplate restTemplate = new RestTemplate();
 	@SuppressWarnings("unchecked")
-	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://localhost:8080/rest/primitiveList", LinkedList.class);
+	private LinkedList<String> prList	 = (LinkedList<String>) restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/primitiveList", LinkedList.class);
 
 	// Login form
 	@RequestMapping("/login")
