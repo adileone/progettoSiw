@@ -260,7 +260,12 @@ public class ManagementController {
 		ArrayList <Edge> linkList =(ArrayList<Edge>) edgeRepository.findByPipeline(pipe);
 		model.addAttribute("pipe", pipe);
 		model.addAttribute("linkList", linkList);
+		
+		ArrayList <String> linkListStamp = new ArrayList<String>();
+		for (Edge e : linkList) linkListStamp.add("id : " + e.getId() + " items : " +  e.getSxItem().toString() + " ----> " + e.getDxItem().toString());
 
+		model.addAttribute("linkListStamp", linkListStamp);
+		
 		return "modifyPipe";
 	}
 
