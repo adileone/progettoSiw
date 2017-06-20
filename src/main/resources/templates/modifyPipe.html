@@ -49,6 +49,10 @@
 				type="submit" value="remove edge" class="btn btn-primary">
 		</form>
 		<br>
+		<div th:if="${edgeNotFindErr}" style="color: red;">
+			<span th:text="${edgeNotFindErr}">title</span>
+		</div>
+		<br>
 
 		<hr>
 

@@ -50,20 +50,42 @@ public class ModifyPipeController {
 	@PostMapping("/removeEdge")
 	public String removeEdge(@RequestParam String pipeId ,@RequestParam String id,Model model) {
 
+		try {
+			
+			ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(Long.valueOf(pipeId));
+			Pipeline pipe = pipeL.get(0);
+
+			ArrayList<Edge> PipeEdges = (ArrayList<Edge>) edgeRepository.findAllById(Long.valueOf(id));
+			Edge edge = PipeEdges.get(0);
+
+			List<Edge> edges = pipe.getEdges();
+			edges.remove(edge);
+
+			pipe.setEdges(edges);
+
+			pipelineService.add(pipe);
+			edgeRepository.deleteById(Long.valueOf(id));
+
+			model.addAttribute("pipe",pipe);
+
+			ArrayList <Edge> linkList =(ArrayList<Edge>) edgeRepository.findByPipeline(pipe);
+
+			ArrayList <String> linkListStamp = new ArrayList<String>();
+			for (Edge e : linkList) linkListStamp.add("id : " + e.getId() + " items : " +  e.getSxItem().toString() + " ----> " + e.getDxItem().toString());
+
+			model.addAttribute("prList", prList);
+			
+			model.addAttribute("linkList", linkList);
+			model.addAttribute("linkListStamp", linkListStamp);
+
+			return "modifyPipe";
+			
+		} catch (Exception e) {
+			
+		}
 
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(Long.valueOf(pipeId));
 		Pipeline pipe = pipeL.get(0);
-
-		ArrayList<Edge> PipeEdges = (ArrayList<Edge>) edgeRepository.findAllById(Long.valueOf(id));
-		Edge edge = PipeEdges.get(0);
-
-		List<Edge> edges = pipe.getEdges();
-		edges.remove(edge);
-
-		pipe.setEdges(edges);
-
-		pipelineService.add(pipe);
-		edgeRepository.deleteById(Long.valueOf(id));
 
 		model.addAttribute("pipe",pipe);
 
@@ -76,6 +98,7 @@ public class ModifyPipeController {
 		
 		model.addAttribute("linkList", linkList);
 		model.addAttribute("linkListStamp", linkListStamp);
+		model.addAttribute("edgeNotFindErr", "edge " + id + " doesn't exists");
 
 		return "modifyPipe";
 
