@@ -49,7 +49,7 @@ public class Utente implements Serializable {
 	@JoinColumn(name="user_id")
 	private List<Skill> skills;
 
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private List<Pipeline> pipelines;
 
