@@ -90,6 +90,19 @@ public class KayakController {
 		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/list", String.class);
 		System.out.println(result + "  ------- > list ok"); 
 		model.addAttribute("resultList",result);
+		
+		try {
+
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+		
 		return "kayakHome";
 	}
 
