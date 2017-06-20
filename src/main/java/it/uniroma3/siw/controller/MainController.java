@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -75,6 +76,9 @@ public class MainController {
 				user.setDataCreazione(new Date());
 				user.setEmail("default admin");
 				user.setRole(Role.ROLE_ADMIN);
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				String hashedPassword = passwordEncoder.encode("admin");
+				user.setPassword(hashedPassword);
 				utenteService.add(user);
 			}
 		
