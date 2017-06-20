@@ -68,6 +68,18 @@ public class KayakController {
 		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/refresh", String.class);
 		System.out.println(result + "  -----  > refresh ok");
 		model.addAttribute("resultRefresh",result);
+		
+		try {
+
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
 		return "kayakHome";
 	}
 
@@ -88,6 +100,19 @@ public class KayakController {
 		String result = restTemplate.getForObject("http://kayakmockbackend.eu-west-2.elasticbeanstalk.com/rest/reset", String.class);
 		System.out.println(result + "  ------- > reset ok"); 
 		model.addAttribute("resultReset",result);
+		
+		try {
+
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+		
 		return "kayakHome";
 	}
 
@@ -136,6 +161,18 @@ public class KayakController {
 		System.out.println(result);
 		
 		model.addAttribute("resultInsert",result);
+		
+		try {
+
+			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
 
 		return "kayakHome";
 	}
@@ -216,6 +253,9 @@ public class KayakController {
 		ArrayList<Pipeline> pipeL = (ArrayList<Pipeline>) pipelineRepository.findAllById(Long.valueOf(id));
 		Pipeline pipe = pipeL.get(0);
 		
+		Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+		pipe.setUser(user);
+		
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
@@ -250,7 +290,17 @@ public class KayakController {
 		
 		try {
 			
-			Utente user = utenteRepository.findByUsername(getUtenteConnesso()).get(0);
+			ArrayList<Pipeline> pipeList = new ArrayList<>();
+			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
+			model.addAttribute("pipeList", pipeList);	
+
+		} catch (Exception e) {
+
+			e.getMessage().toString();
+		}
+		
+		try {
+
 			ArrayList<Pipeline> pipeList = new ArrayList<>();
 			pipeList = (ArrayList<Pipeline>) pipelineRepository.findByUser(user);
 			model.addAttribute("pipeList", pipeList);	
