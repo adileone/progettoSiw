@@ -59,6 +59,9 @@
 		<div th:if="${message}" style="color: green;">
 			<span th:text="${message}">title</span>
 		</div>
+		<div th:if="${resultInsert}" style="color: green;">
+			<span th:text="${resultInsert}">title</span>
+		</div>
 		<br>
 
 		<ul class="nav nav-tabs">
@@ -95,6 +98,9 @@
 					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 						<div class="panel panel-success">
 							<div class="panel-heading">List completed</div>
+							<div th:if="${resultRefresh}" style="color: black;">
+								<span th:text="${resultRefresh}">title</span>
+							</div>
 
 						</div>
 					</div>
@@ -229,14 +235,26 @@
 			</div>
 
 			<div id="list" class="tab-pane fade">
+				<br></br>
+				<div th:if="${resultList}" style="color: black;">
+					<span th:text="${resultList}">title</span>
+				</div>
+				<hr>
+				<br>
 				<form action="list" method="get">
 					<h3>List</h3>
-					<br></br> <input type="submit" class="btn btn-primary" value="List"></input>
-					<br></br> <br></br>
+					<br> <input type="submit" class="btn btn-primary" value="List"></input>
+					<br>
 				</form>
 			</div>
 
 			<div id="reset" class="tab-pane fade">
+				<br></br>
+				<div th:if="${resultReset}" style="color: black;">
+					<span th:text="${resultReset}">title</span>
+				</div>
+				<hr>
+				<br>
 				<form action="reset" method="get">
 					<h3>Reset</h3>
 					<br></br> <input type="submit" class="btn btn-primary"
